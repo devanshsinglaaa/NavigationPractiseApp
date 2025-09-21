@@ -13,6 +13,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.navigationsample.ui.theme.NavigationSampleTheme
+import androidx.compose.runtime.*
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,13 +42,14 @@ fun MyApp(){
     NavHost(navController = navController, startDestination = "firstscreen"){
         // ckmposable function with navhoat allows to call the function that's like a constructor to the screen.
         composable("firstscreen"){
-            FirstScreen {name->
-                navController.navigate("secondscreen/$name")
+            FirstScreen {name,age->
+                navController.navigate("secondscreen/$name/$age")
             }
         }
-        composable("secondscreen/{name}"){
+        composable("secondscreen/{name}/{age}"){
             val name = it.arguments?.getString("name") ?: "no name"
-            SecondScreen(name) {
+            val age = it.arguments?.getString("age")?.toIntOrNull() ?: 0
+            SecondScreen(name, age) {
                 navController.navigate("thirdscreen")
             }
         }

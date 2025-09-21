@@ -21,7 +21,7 @@ import com.example.navigationsample.ui.theme.NavigationSampleTheme
 
 
 @Composable
-fun FirstScreen(gotoSecondScreen:(String)->Unit) {
+fun FirstScreen(gotoSecondScreen:(String,Int)->Unit) {
 
     Column (
         modifier = Modifier.fillMaxSize(),
@@ -37,13 +37,21 @@ fun FirstScreen(gotoSecondScreen:(String)->Unit) {
         Spacer(modifier = Modifier.height(20.dp))
 
         val name = remember { mutableStateOf("") }
+        val ageInput = remember { mutableStateOf("") }
+
         OutlinedTextField(value = "${name.value}", onValueChange = {
             name.value = it
+        })
+        OutlinedTextField(value = "${ageInput.value}", onValueChange = {
+            ageInput.value = it
         })
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Button(onClick = { gotoSecondScreen(name.value) }) {
+        Button(onClick = {
+            val age=ageInput.value.toIntOrNull() ?: 0
+            gotoSecondScreen(name.value,age)
+        }) {
             Text(
                 text = "Click Me to goto Second Screen",
                 fontSize = 18.sp,
@@ -59,6 +67,6 @@ fun FirstScreen(gotoSecondScreen:(String)->Unit) {
 @Composable
 fun FirstScreenPreview() {
     NavigationSampleTheme {
-        FirstScreen({})
+//        FirstScreen({})
     }
 }
